@@ -4,8 +4,9 @@ public class TesteDeImpostos {
 	public static void main(String[] args) {
 		Imposto iss = new ISS();
 		Imposto icms = new ICMS();
+		Imposto iccc = new ICCC();
 		
-		Orcamento orcamento = new Orcamento(500.0);
+		Orcamento orcamento = new Orcamento(3001.0);
 		
 		CalculadorDeImpostos calculador = new CalculadorDeImpostos();
 		
@@ -14,5 +15,8 @@ public class TesteDeImpostos {
 		
 		//calculando o ICMS
 		calculador.realizaCalculo(orcamento, icms);
+		
+		//calulando o ICC
+		calculador.realizaCalculo(orcamento, iccc);
 	}
 }
