@@ -2,16 +2,30 @@ package br.com.caelum.leilao.dominio;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Before;
 import org.junit.Test;
+
+import br.com.caelum.leilao.builder.CriadorDeLeilao;
 
 public class LeilaoTest {
 	
+	private Usuario steveJobs;
+	private Usuario steveWozniak;
+	private Usuario billGates;
+	
+	@Before
+	public void setUp() {
+		this.steveJobs = new Usuario("Steve Jobs");
+		this.steveWozniak = new Usuario("Steve Wozniak");
+		this.billGates = new Usuario("Bill Gates");
+	}
+	
 	@Test
 	public void deveReceberUmLance() {
-		Leilao leilao = new Leilao("MacBook pro 15");
+		Leilao leilao = new CriadorDeLeilao().para("MacBook pro 15").constroi();
 		assertEquals(0, leilao.getLances().size());
 		
-		leilao.propoe(new Lance(new Usuario("Steve Jobs"), 2000));
+		leilao.propoe(new Lance(steveJobs, 2000));
 		
 		assertEquals(1,leilao.getLances().size());
 		assertEquals(2000.0, leilao.getLances().get(0).getValor(),0.00001);
@@ -20,8 +34,8 @@ public class LeilaoTest {
 	@Test
 	public void deveReceberVariosLances() {
 		Leilao leilao = new Leilao("MacBook pro 15");
-		leilao.propoe(new Lance(new Usuario("Steve Jobs"), 2000.0));
-		leilao.propoe(new Lance(new Usuario("Steve Wozniak"), 3000.0));
+		leilao.propoe(new Lance(steveJobs, 2000.0));
+		leilao.propoe(new Lance(steveWozniak, 3000.0));
 		
 		assertEquals(2, leilao.getLances().size());
 		assertEquals(2000.0, leilao.getLances().get(0).getValor(),0.00001);
@@ -31,7 +45,6 @@ public class LeilaoTest {
 	@Test
 	public void naoDeveAceitarDoisLancesDoMesmoUsuario() {
 		Leilao leilao = new Leilao("MacBook pro 15");
-		Usuario steveJobs = new Usuario("Steve Jobs");
 		
 		leilao.propoe(new Lance(steveJobs, 2000.0));
 		leilao.propoe(new Lance(steveJobs, 3000.0));
@@ -43,9 +56,7 @@ public class LeilaoTest {
 	
 	@Test
 	public void naoDeveAceitarMaisDoQue5LancesDeUmMesmoUsuario() {
-		Leilao leilao = new Leilao("MacBook Pro 15");
-		Usuario steveJobs = new Usuario("Steve Jobs");
-		Usuario billGates = new Usuario("Bill Gates");
+		Leilao leilao = new Leilao("MacBook Pro 15"); 
 		
 		leilao.propoe(new Lance(steveJobs, 2000.0));
 		leilao.propoe(new Lance(billGates, 3000.0));
@@ -73,8 +84,6 @@ public class LeilaoTest {
 	@Test
 	public void deveDobrarOUltimoLanceDado() {
 		Leilao leilao = new Leilao("MacBook Pro 15");
-		Usuario steveJobs = new Usuario("Steve Jobs");
-		Usuario billGates = new Usuario("Bill Gates");
 		
 		leilao.propoe(new Lance(steveJobs, 2000.0));
 		leilao.propoe(new Lance(billGates, 3000.0));
@@ -86,7 +95,6 @@ public class LeilaoTest {
 	@Test
 	public void naoDeveDobrarCasoNaoHajaLanceAnterior() {
 		Leilao leilao = new Leilao("Macbook Pro 15");
-		Usuario steveJobs = new Usuario("Steve Jobs");
 		
 		leilao.dobraLance(steveJobs);
 		
