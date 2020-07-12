@@ -28,6 +28,7 @@ public class AvaliadorTest {
 		
 	}
 	
+	
 	@Test
 	public void deveEntenderLancesEmOrdemCrescente() {
 		Leilao leilao = new CriadorDeLeilao().para("Play 4")
@@ -63,7 +64,7 @@ public class AvaliadorTest {
         assertEquals(400, leiloeiro.getMedia(), 0.0001);
 	}
 	
-	@Test
+	@Test(expected = RuntimeException.class)
 	public void testaMediaDeZeroLance() {
 		
 		
@@ -152,17 +153,6 @@ public class AvaliadorTest {
         assertEquals(100, maiores.get(1).getValor(), 0.00001);
     }
 	
-	@Test
-    public void deveDevolverListaVaziaCasoNaoHajaLances() {
-		Leilao leilao = new CriadorDeLeilao().para("Caixa magina")
-				.constroi();
-
-        leiloeiro.avalia(leilao);
-
-        List<Lance> maiores = leiloeiro.getTresMaiores();
-
-        assertEquals(0, maiores.size());
-    }
 
 
 
